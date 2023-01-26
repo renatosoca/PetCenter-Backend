@@ -7,8 +7,8 @@ connectDB();
 
 const port = process.env.PORT || 4000;
 
-//Habilitar Lectura de Datos de los Formularios
-app.use(express.urlencoded({ extended: true }));
+//Habilitar Lectura de JSON
+app.use( express.json() );
 
 //Asignar Router
 app.use('/api/veterinarios', VeterinarioRoutes);
