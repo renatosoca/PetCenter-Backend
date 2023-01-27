@@ -8,7 +8,7 @@ const registrar = async (req, res) => {
     //Prevenir Usuarios Duplicados
     const existeUsuario = await Veterinario.findOne({email});
     if (existeUsuario) {
-        const error = new Error('Usuario Ya Registrado');
+        const error = new Error('El Email Ya Está en Uso');
         return res.status(400).json({ msg: error.message });
     };
     
@@ -17,7 +17,7 @@ const registrar = async (req, res) => {
         const respuesta = await veterinario.save();
         res.json({ msg : 'Veterinario registrado'});
     } catch (e) {
-        const error = new Error('Ocurrio un Problema');
+        const error = new Error('No se Pudo registrar al Veterinario');
         res.status(400).json( { msg: error.message } );
     };
 };
