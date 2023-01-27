@@ -20,6 +20,8 @@ const corsOptions = {
     },
 };
 app.use(cors(corsOptions));
+//Todos tienen Acceso
+/* app.use(cors({origin: '*'})); */
 
 //Definir el Puerto
 const port = process.env.PORT || 4000;
