@@ -8,7 +8,7 @@ const app = express();
 connectDB();
 
 //Para definir quienes tendran Acceso.
-const dominiosPermitidos = ['http://localhost:5173'];
+const dominiosPermitidos = [process.env.FRONTEND_URI];
 const corsOptions = {
     origin: function( origin, callback ) {
         if (dominiosPermitidos.indexOf(origin) !== -1) {
