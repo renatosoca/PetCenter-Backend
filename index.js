@@ -1,6 +1,7 @@
 import express from 'express';
-import VeterinarioRoutes from './routes/VeterinarioRoutes.js';
 import connectDB from './config/db.js';
+import VeterinarioRoutes from './routes/VeterinarioRoutes.js';
+import PacienteRoutes from './routes/PacienteRouter.js';
 
 const app = express();
 connectDB();
@@ -12,6 +13,7 @@ app.use( express.json() );
 
 //Asignar Router
 app.use('/api/veterinarios', VeterinarioRoutes);
+app.use('/api/pacientes', PacienteRoutes);
 
 //Generar Servidor
 app.listen( port, () => {
