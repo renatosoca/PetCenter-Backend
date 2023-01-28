@@ -13,9 +13,9 @@ const emailRegistro = async (datos) => {
     //Enviar Email
     const { email, nombre, token } = datos;
     const info = await transporter.sendMail({
-        from: 'Administrador de Pacientes de Veterinaria',
+        from: 'administracion@gamil.com',
         to: email,
-        subject: 'Confirma tu Cuenta en APV',
+        subject: 'Confirma tu Cuenta',
         html: `
             <p>Hola ${nombre}, comprueba tu cuenta en APV</p>
             <p>Tu cuenta ya está lista, solo debes comprobarla en el siguiente enlace:
@@ -24,7 +24,7 @@ const emailRegistro = async (datos) => {
             <p>Si tu no creaste esta cuenta, puedes ignorar este mensaje</p>
         `
     });
-    console.log('Mensaje Enviado: %s', info.messageId);
-}
+    /* console.log('Mensaje Enviado: %s', info.messageId); */
+};
 
 export default emailRegistro;

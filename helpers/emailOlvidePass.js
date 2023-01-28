@@ -24,7 +24,7 @@ const emailOlvidePass = async (datos) => {
             <p>Si tu no creaste esta cuenta, puedes ignorar este mensaje</p>
         `
     });
-    console.log('Mensaje Enviado de Recuperar: %s', info.messageId);
-}
+    /* console.log('Mensaje Enviado de Recuperar: %s', info.messageId); */
+};
 
 export default emailOlvidePass;

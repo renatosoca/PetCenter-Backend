@@ -13,9 +13,9 @@ const connectDB = async () => {
         });
         
         const url = `${db.connection.host}: ${db.connection.port}`;
-        console.log(url);
+        /* console.log(url); */
     } catch (error) {
-        console.log(`Error en ${error}`);
+        /* console.log(`Error en ${error}`); */
         process.exit(1);
     };
 };

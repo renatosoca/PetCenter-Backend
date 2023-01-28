@@ -32,12 +32,6 @@ const registrar = async (req, res) => {
     };
 };
 
-const perfil = (req, res) => {
-    const { veterinario } = req;
-    
-    res.json( veterinario );
-};
-
 const confirmar = async (req, res) => {
     //Cuando Extraemos valores de la URL
     const { token } = req.params;
@@ -159,12 +153,74 @@ const nuevoPassword = async (req, res) => {
     };
 };
 
+const perfil = (req, res) => {
+    const { veterinario } = req;
+    
+    res.json( veterinario );
+};
+const actualizarPerfil = async (req, res) => {
+    const veterinario = await Veterinario.findById( req.params.id )
+    if ( !veterinario) {
+        const error = new Error('No existe el Veterinario');
+        return res.status(404).json({ msg: error.message });
+    };
+    
+    const { email } = req.body
+    if ( veterinario.email !== req.body.email ) {
+        const existEmail = await Veterinario.findOne( { email });
+        if (existEmail) {
+            const error = new Error('El Email ya está en Uso');
+            return res.status(404).json({ msg: error.message });
+        };
+    };
+
+    try {
+        veterinario.nombre = req.body.nombre || veterinario.nombre;
+        veterinario.email = req.body.email || veterinario.email;
+        veterinario.web = req.body.web;
+        veterinario.telefono = req.body.telefono;
+
+        const veterinarioActualizado = await veterinario.save();
+        res.json( veterinarioActualizado );
+    } catch (e) {
+        const error = new Error('No se pudo actualizar el Perfil del Usuario');
+        return res.status(404).json({ msg: error.message });
+    }
+};
+const actualizarClave = async (req, res) => {
+    //Leer Datos
+    const { id } = req.veterinario;
+    const { currentPassword, newPassword } = req.body;
+    //Existe
+    const veterinario = await Veterinario.findById( id );
+    if ( !veterinario ) {
+        const error = new Error('No existe el usuario');
+        return res.status(404).json({ msg: error.message });
+    };
+    //Comprobar el Pass
+    if ( ! await veterinario.comprobarPass( currentPassword ) ) {
+        const error = new Error('Contraseña Actual Incorrecta');
+        return res.status(403).json( { msg: error.message } );
+    }
+    //Actualizar Pass
+    try {
+        veterinario.password = newPassword;
+        await veterinario.save();
+        res.json({ msg: 'Contraseña Actualizada Correctamente' });
+    } catch (e) {
+        const error = new Error('Error al Actualizar la Contraseña');
+        return res.status(403).json( { msg: error.message } );
+    };
+};
+
 export {
     registrar,
     perfil,
+    actualizarPerfil,
     confirmar,
     autenticar,
     olvidePassword,
     comprobarToken,
-    nuevoPassword
+    nuevoPassword,
+    actualizarClave
 };
