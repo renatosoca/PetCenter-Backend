@@ -8,7 +8,7 @@ const app = express();
 connectDB();
 
 //Para definir quienes tendran Acceso.
-const dominiosPermitidos = [process.env.FRONTEND_URI];
+/* const dominiosPermitidos = [process.env.FRONTEND_URI];
 const corsOptions = {
     origin: function( origin, callback ) {
         if (dominiosPermitidos.indexOf(origin) !== -1) {
@@ -19,9 +19,9 @@ const corsOptions = {
         };
     },
 };
-app.use(cors(corsOptions));
-//Todos tienen Acceso
-/* app.use(cors({origin: '*'})); */
+app.use(cors(corsOptions)); */
+//Para que todos tengan acceso
+app.use(cors({origin: '*'}));
 
 //Definir el Puerto
 const port = process.env.PORT || 4000;

@@ -2,13 +2,13 @@ import Paciente from "../models/Paciente.js";
 
 const agregarPaciente = async (req, res) => {
     const paciente = new Paciente( req.body );
-    paciente.veterinario = req.veterinario._id
+    paciente.veterinario = req.veterinario._id;
     
     try {
         const pacienteInsert = await paciente.save();
         res.json( pacienteInsert )
     } catch (error) {
-        const e = new Error('Ocurrio un Problema con el Sistema');
+        const e = new Error('No se Pudo Registrar al Paciente');
         res.status(400).json( { msg: e.message } );
     };
 };

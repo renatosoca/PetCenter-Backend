@@ -55,7 +55,7 @@ const confirmar = async (req, res) => {
         await veterinario.save();
         res.json( {msg: 'Usuario Confirmado'} );
     } catch (e) {
-        const error = new Error('Ocurrio un Problema');
+        const error = new Error('No se Pudo confirmar al Usuario');
         res.status(400).json( { msg: error.message } );
     };
 };
@@ -68,19 +68,27 @@ const autenticar = async (req, res) => {
         const error = new Error('El Usuario no Existe');
         return res.status(403).json( { msg: error.message });
     };
-
     //Si no esta confirmado
     if ( !veterinario.confirmado) {
         const error = new Error('Falta confirmar su cuenta');
         return res.status(403).json( { msg: error.message });
     };
     //Validar Password
-    if ( !await veterinario.comprobarPass( password )) {
+    const validated = await veterinario.comprobarPass( password );
+    if ( !validated ) {
         const error = new Error('Password incorrecto');
         return res.status(403).json( { msg: error.message });
     };
-    //Autenticar
-    res.json( { token: generarJWT( veterinario.id ) } );
+    //Autenticado
+    const { _id, nombre, telefono, web } = veterinario;
+    res.json( {
+        _id,
+        nombre,
+        email,
+        telefono,
+        web,
+        token: generarJWT( veterinario.id )
+    });
 };
 
 const olvidePassword = async (req, res) => {
@@ -135,7 +143,7 @@ const nuevoPassword = async (req, res) => {
     const veterinario = await Veterinario.findOne( { token } );
 
     if ( !veterinario ) {
-        const error = new Error('Token no válido');
+        const error = new Error('Usuario no Encontrado');
         return res.status(400).json( { msg: error.message } );
     };
 
@@ -146,9 +154,9 @@ const nuevoPassword = async (req, res) => {
         
         res.json( { msg: 'Password Modificado Correctamente' } );
     } catch (e) {
-        const error = new Error('Ocurrio un Problema');
+        const error = new Error('No se Pudo Crear un Nuevo Password');
         res.status(400).json( { msg: error.message } );
-    }
+    };
 };
 
 export {

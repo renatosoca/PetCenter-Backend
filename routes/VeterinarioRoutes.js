@@ -10,6 +10,7 @@ router.post('/login', autenticar);
 router.post('/olvide-password', olvidePassword );
 router.route('/olvide-password/:token' ).get( comprobarToken ).post( nuevoPassword );
 
+//Area Protegida
 router.get('/perfil', authMiddleware, perfil);
 
 export default router;
