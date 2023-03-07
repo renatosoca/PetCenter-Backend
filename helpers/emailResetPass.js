@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-const emailRegistro = async (datos) => {
+const emailResetPass = async (datos) => {
     const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: process.env.EMAIL_PORT,
@@ -15,16 +15,16 @@ const emailRegistro = async (datos) => {
     const info = await transporter.sendMail({
         from: 'administracion@gamil.com',
         to: email,
-        subject: 'Confirma tu Cuenta',
+        subject: 'Reestablece tu Contraseña',
         html: `
-            <p>Hola ${nombre}, comprueba tu cuenta en APV</p>
-            <p>Tu cuenta ya está lista, solo debes comprobarla en el siguiente enlace:
-            <a href="${process.env.FRONTEND_URI}/confirmar/${token}" target="_black">Confirmar Cuenta</a></p>
-            
+            <p>Hola ${nombre}, has solicitado reestablecer tu contraseña</p>
+            <p>Sigue el siguiente enlace para generar tu nueva contraseña:
+            <a href="${process.env.FRONTEND_URI}/olvide-password/${token}" target="_black">Nueva Contraseña</a></p>
+
             <p>Si tu no creaste esta cuenta, puedes ignorar este mensaje</p>
         `
     });
-    /* console.log('Mensaje Enviado: %s', info.messageId); */
+    /* console.log('Mensaje Enviado de Recuperar: %s', info.messageId); */
 };
 
-export default emailRegistro;
+export default emailResetPass;

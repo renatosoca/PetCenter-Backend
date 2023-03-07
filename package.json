@@ -4,7 +4,8 @@
   "description": "BackEnd del proyecto FullStack MERN",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "index.js"
   },
   "repository": {
     "type": "git",
@@ -12,13 +13,14 @@
   },
   "author": "Renato Soca",
   "license": "ISC",
-  "homepage": "https://github.com/renatosoca/Administracion-Pacientes-MERN#readme",
   "type": "module",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-validator": "^6.15.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",
     "nodemailer": "^6.9.1"

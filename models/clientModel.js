@@ -1,12 +1,12 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 
-const PacienteSchema = mongoose.Schema({
-    nombre: {
+const ClientSchema = Schema({
+    name: {
         type: String,
         required: true,
         trim: true
     },
-    propietario: {
+    owner: {
         type: String,
         required: true,
         trim: true
@@ -16,20 +16,20 @@ const PacienteSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    fechaAlta: {
+    date: {
         type: Date,
         required: true,
         default: Date.now()
     },
-    sintomas: {
+    symptoms: {
         type: String,
         required: true
     },
-    veterinario: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Veterinario'
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 }, { timestamps: true });
 
-const Paciente = mongoose.model( 'Paciente', PacienteSchema );
-export default Paciente;
+export default model( 'Client', ClientSchema );
