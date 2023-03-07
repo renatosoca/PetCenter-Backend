@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv/config';
 
 const connectDB = async () => {
-    //Solo se insertaran en la Base de Datos los campos especificados en los modelos
     mongoose.set("strictQuery", false);
 
     try {
