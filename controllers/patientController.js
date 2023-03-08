@@ -28,7 +28,7 @@ const createPatient = async (req, res) => {
 
     res.status(201).json({ 
       ok: true,
-      event: savedPatient, 
+      patient: savedPatient, 
     });
   } catch (error) {
     res.status(500).json({ 
@@ -59,7 +59,7 @@ const updatePatient = async (req, res) => {
   
   try {
     const patient = await clientModel.findById( id );
-    if ( !patient ) return res.status(404).json({ ok: false, msg: 'Evento no encontrado' });
+    if ( !patient ) return res.status(404).json({ ok: false, msg: 'Paciente no encontrado' });
 
     if ( patient.user._id.toString() !== _id.toString() ) return res.status(401).json({ msg: 'No autorizado para esta acción' });
 
@@ -71,7 +71,7 @@ const updatePatient = async (req, res) => {
 
     res.status(200).json({
       ok: true,
-      event: updatePatient,
+      patient: updatePatient,
     });
   } catch (error) {
     res.status(500).json({ 

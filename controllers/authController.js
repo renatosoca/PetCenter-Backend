@@ -1,6 +1,8 @@
 import userModel from "../models/userModel.js";
 import jwtGenerator from "../helpers/jwtGenerator.js";
 import tokenGenerator from "../helpers/tokenGenerador.js";
+import emailRegister from "../helpers/emailRegister.js";
+import emailResetPass from "../helpers/emailResetPass.js";
 
 const authUser = async (req, res) => {
   const { email, password } = req.body;
@@ -38,14 +40,14 @@ const registerUser = async (req, res) => {
 
     const user = new userModel( req.body );
     const savedUser = await user.save();
-    const { token } = savedUser;
+    const { token, name, lastname } = savedUser;
 
-    /* emailRegistro({
+    emailRegister({
       email,
       name,
       lastname,
       token,
-    }); */
+    });
 
     res.status(200).json({ 
       msg: 'Hemos enviado las instrucciones a tu correo electrónico' 
@@ -97,12 +99,12 @@ const forgotPassword = async (req, res) => {
     user.token = tokenGenerator();
     const { name, lastname, token } = await user.save();
 
-    /* emailOlvidePass({
+    emailResetPass({
       email,
       name,
       lastname,
       token,
-    }); */
+    });
 
     res.status(201).json({ 
       msg: 'Hemos enviado las instrucciones a su correo electrónico' 
@@ -155,6 +157,7 @@ const newPassword = async (req, res) => {
   }
 };
 
+//Routes Privates
 const userProfile = (req, res) => {
   const { _id, name, lastname, email, phone, webPage } = req.user;
 
@@ -178,6 +181,7 @@ const userProfile = (req, res) => {
 const updateUserProfile = async (req, res) => {
     const { id } = req.params;
     const { email } = req.body;
+    const { _id } = req.user;
   
     try {
       const user = await userModel.findById( id );
@@ -188,6 +192,8 @@ const updateUserProfile = async (req, res) => {
         const emailExist = await userModel.findOne({ email });
         if ( emailExist ) return res.status(400).json({ ok: false, msg: 'El email ya está en uso' });
       }
+
+      if ( user._id.toString() !== _id.toString() ) return res.status(401).json({ msg: 'No autorizado para esta acción' });
   
       const newUser = {
         ...req.body,
@@ -216,6 +222,8 @@ const updateUserPassword = async (req, res) => {
 
     const validPassword = await user.matchPassword( oldPassword );
     if ( !validPassword ) return res.status(404).json({ ok: false, msg: 'La contraseña actual es incorrecta' });
+
+    if ( user._id.toString() !== _id.toString() ) return res.status(401).json({ msg: 'No autorizado para esta acción' });
 
     user.password = newPassword;
     await user.save();
