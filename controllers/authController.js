@@ -75,8 +75,9 @@ const confirmAccount = async (req, res) => {
   try {
     const user = await userModel.findOne({ token });
     if (!user) return res.status(404).json({ msg: 'Token no válido o expirado' });
+    if (user.confirmed) return res.status(404).json({ msg: 'Esta cuenta ya ha sido confirmada anteriormente. Inicia sesión o restablece tu contraseña' });
 
-    user.confirmado = true;
+    user.confirmed = true;
     user.token = null;
     await user.save();
 

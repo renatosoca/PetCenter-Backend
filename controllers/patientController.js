@@ -4,7 +4,7 @@ const getPatients = async (req, res) => {
   const { _id } = req.user;
 
   try {
-    const patients = await clientModel.find({ user: _id }).populate("user", "name lastname email");
+    const patients = await clientModel.find({ user: _id }).populate("user", "name lastname email").sort({ createdAt: -1 });
 
     res.status(200).json({
       ok: true,
