@@ -7,7 +7,6 @@ const getPatients = async (req, res) => {
     const patients = await clientModel.find({ user: _id }).populate("user", "name lastname email").sort({ createdAt: -1 });
 
     res.status(200).json({
-      ok: true,
       patients
     });
   } catch (error) {
@@ -26,8 +25,7 @@ const createPatient = async (req, res) => {
     patient.user = _id;
     const savedPatient = await patient.save();
 
-    res.status(201).json({ 
-      ok: true,
+    res.status(201).json({
       patient: savedPatient, 
     });
   } catch (error) {
@@ -47,7 +45,7 @@ const getPatient = async (req, res) => {
     
         if ( patient.user._id.toString() !== _id.toString() ) return res.status(401).json({ msg:'No autorizado para esta acción' });
     
-        res.status(200).json({ ok: true, patient });
+        res.status(200).json({ patient });
     } catch (error) {
         return res.status(500).json({ msg: 'Error del sistema, comuniquese con el administrador'  });
     };

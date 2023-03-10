@@ -58,13 +58,15 @@ const registerUser = async (req, res) => {
 };
 
 const revalidateJWT = async (req, res) => {
-  const { _id, name, lastname, email } = req.user;
+  const { _id, name, lastname, email, phone, webPage } = req.user;
 
   res.status(201).json({
     _id,
     name,
     lastname,
     email,
+    phone,
+    webPage,
     jwt: jwtGenerator( _id, name ),
   });
 }
@@ -200,9 +202,10 @@ const updateUserProfile = async (req, res) => {
         ...req.body,
       }
       const updateUser = await userModel.findByIdAndUpdate( id, newUser, { new: true } );
+      const { name, lastname, phone, webPage} = updateUser;
   
       return res.status(200).json({
-        user: updateUser,
+        user: { name, lastname, email, phone, webPage },
         msg: 'Perfil actualizado correctamente'
       })
     } catch (error) {

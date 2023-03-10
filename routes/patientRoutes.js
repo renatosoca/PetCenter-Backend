@@ -8,7 +8,11 @@ const router = Router();
 
 router.use( jwtValidation );
 
-router.route('/').get(  getPatients ).post(  createPatient ); //PASÓ
-router.route('/:id').get( getPatient ).put( updatePatient ).delete( deletePatient );  //PASÓ
+router.route('/').get(  getPatients ) //PASÓ
+  .post(  createPatient ); //PASÓ
+
+router.route('/:id').get( getPatient ) //Depende del programador - PASÓ
+  .put( updatePatient ) //PASÓ
+  .delete( deletePatient );  //PASÓ
 
 export default router

@@ -56,7 +56,7 @@ const emailResetPass = async ( payload ) => {
                 <p>Hemos recibido su solicitud para reestablecer su contraseña en nuestro sitio web <span style="font-weight: bold; font-size: 1.1rem;">${admin.company}</span></p>
                 <p>Para continuar con el proceso de reestablecimiento de contraseña, <span style="color: #FFF;">haga click en el siguiente enlace :</span></p>
         
-                <a href="${process.env.FRONTEND_URI}/auth/reset-password/${token}" target="_blank" style="padding: 1rem; text-align: center; display: block; color: #f1f1f1; background-color: #62A2EF;text-decoration: none; border-radius: 5rem; margin-bottom: 1rem;">${admin.submit}</a>
+                <a href="${process.env.FRONTEND_URI}/reset-password/${token}" target="_blank" style="padding: 1rem; text-align: center; display: block; color: #f1f1f1; background-color: #62A2EF;text-decoration: none; border-radius: 5rem; margin-bottom: 1rem;">${admin.submit}</a>
                 </div>  <!-- End Body -->
         
                 <div style="margin-top: 1.5rem; line-height: 1.8;">

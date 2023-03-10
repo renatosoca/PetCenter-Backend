@@ -25,12 +25,12 @@ const userSchema = Schema({
     },
     phone: {
         type: String,
-        default: null,
+        default: '',
         trim: true
     },
     webPage: {
         type: String,
-        default: null
+        default: '',
     },
     token: {
         type: String,

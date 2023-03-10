@@ -56,7 +56,7 @@ const emailRegister = async ( payload ) => {
                 <p>Te damos la bienvenida a nuestro sitio web <span style="font-weight: bold; font-size: 1.1rem;">${admin.company}</span></p>
                 <p>Para completar su registro , debe confirmar su dirección de correo electrónico <span style="color: #FFF; font-weight: bold;">haciendo click en el siguiente enlace :</span></p>
         
-                <a href="${process.env.FRONTEND_URI}/auth/confirm/${token}" target="_blank" style="padding: 1rem; text-align: center; display: block; color: #f1f1f1; background-color: #62A2EF;text-decoration: none; border-radius: 5rem; margin-bottom: 1rem;">${admin.submit}</a>
+                <a href="${process.env.FRONTEND_URI}/confirm/${token}" target="_blank" style="padding: 1rem; text-align: center; display: block; color: #f1f1f1; background-color: #62A2EF;text-decoration: none; border-radius: 5rem; margin-bottom: 1rem;">${admin.submit}</a>
                 </div>  <!-- End Body -->
         
                 <div style="margin-top: 1.5rem; line-height: 1.8;">
