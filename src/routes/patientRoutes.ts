@@ -1,12 +1,10 @@
-import { Router } from "express";
-import { 
-  createPatient, deletePatient, getPatient, getPatients, updatePatient 
-} from "../controllers/patientController.js";
-import jwtValidation from "../middleware/jwtValidation.js";
+import { Router } from 'express';
+import { createPatient, deletePatient, getPatient, getPatients, updatePatient } from '../controllers';
+import { checkSesion } from '../middleware';
 
 const router = Router();
 
-router.use( jwtValidation );
+router.use( checkSesion );
 
 router.route('/').get(  getPatients ) //PASÓ
   .post(  createPatient ); //PASÓ

@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    /* Modules */
+    "module": "commonjs",
+    "rootDir": "./src",
+    "moduleResolution": "node",
+    // "baseUrl": "./",
+    // "paths": {},
+    // "rootDirs": [],
+    // "typeRoots": [],
+    // "types": [],
+    // "allowUmdGlobalAccess": true,
+    // "moduleSuffixes": [],
+    // "resolveJsonModule": true,
+    // "noResolve": true,
+
+    "sourceMap": true,
+    // "outFile": "./",
+    "outDir": "./dist",
+    // "removeComments": true,
+    // "noEmit": true,
+    // "importHelpers": true,
+    // "importsNotUsedAsValues": "remove",
+    // "downlevelIteration": true,
+    // "sourceRoot": "",
+    // "mapRoot": "",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+    //"noImplicitAny": true,
+    // "strictNullChecks": true,                         /* When type checking, take into account 'null' and 'undefined'. */
+    // "strictFunctionTypes": true,
+    // "strictBindCallApply": true,
+    // "strictPropertyInitialization": true,
+    // "noImplicitThis": true,
+    // "useUnknownInCatchVariables": true,
+    // "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Completeness */
+    // "skipDefaultLibCheck": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+}
