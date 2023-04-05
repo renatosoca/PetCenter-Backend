@@ -22,6 +22,11 @@ const patientSchema = new Schema<Patient>({
     required: true,
     default: Date.now(),
   },
+  symptoms: {
+    type: String,
+    trim: true,
+    default: ''
+  },
   createdFor: {
     type: Schema.Types.ObjectId,
     ref: 'User',

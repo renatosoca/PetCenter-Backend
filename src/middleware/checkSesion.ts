@@ -12,7 +12,7 @@ export const checkSesion = async (req: UserRequest, res: Response, next: NextFun
 
       const { _id } = verifyJWT(token);
       req.user = await userModel.findById( _id ).select('-password -token -confirmed -createdAt -updatedAt') ?? undefined;
-
+      
       return next();
     } catch (error) {
       return res.status(401).json({ msg: 'Sin autorización' });

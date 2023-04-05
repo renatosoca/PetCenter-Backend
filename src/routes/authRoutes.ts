@@ -19,6 +19,6 @@ router.use( checkSesion );
 router.get('/revalidateAuth', revalidateAuth);  //PASÓ
 router.get('/profile', userProfile);  //Depende del programador - PASÓ
 router.put('/profile/:id', updateUserProfile); //PASÓ
-router.put('/password-profile', updateUserPassword); //PASÓ
+router.put('/password-profile/:id', updateUserPassword); //PASÓ
 
 export default router;

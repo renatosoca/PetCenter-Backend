@@ -1,13 +1,13 @@
-import { Request, Response } from "express";
-import userModel from "../models/userModel";
-import { comparePassword, emailUserRegister, emailUserResetPass, generateJWT, generateToken } from "../helpers";
-import { UserRequest } from "../interfaces";
+import { Request, Response } from 'express';
+import { userModel } from '../models';
+import { comparePassword, emailUserRegister, emailUserResetPass, generateJWT, generateToken, hashPassword } from '../helpers';
+import { UserRequest } from '../interfaces';
 
-const userAuth = async ({ body }: Request, res: Response) => {
+export const userAuth = async ({ body }: Request, res: Response) => {
   const { email, password } = body;
 
   try {
-    const user = await userModel.findOne({ email }).select(' -password -token -confirmed -createdAt -updatedAt');
+    const user = await userModel.findOne({ email });
     if (!user) return res.status(404).json({ ok: false, msg: "No existe un usuario con este email" });
     if (!user.confirmed) return res.status(403).json({ ok: false, msg: "Falta confirmar su correo electronico" });
 
@@ -24,7 +24,7 @@ const userAuth = async ({ body }: Request, res: Response) => {
   }
 }
 
-const userRegister = async ({ body }: Request, res: Response) => {
+export const userRegister = async ({ body }: Request, res: Response) => {
   const { email } = body;
 
   try {
@@ -32,6 +32,7 @@ const userRegister = async ({ body }: Request, res: Response) => {
     if (userExist) return res.status(400).json({ ok: false, msg: 'Ya existe un usuario con ese email' });
 
     const user = new userModel(body);
+    user.password = hashPassword(user.password);
     const { token, name, lastname } = await user.save();
 
     await emailUserRegister(email, name, lastname, token);
@@ -45,13 +46,13 @@ const userRegister = async ({ body }: Request, res: Response) => {
   }
 }
 
-const confirmAccount = async ({ params }: Request, res: Response) => {
+export const confirmAccount = async ({ params }: Request, res: Response) => {
   const { token } = params;
 
   try {
     const user = await userModel.findOne({ token });
     if (!user) return res.status(404).json({ ok: false, msg: 'Token no válido o expirado' });
-    if (user.confirmed) return res.status(404).json({ ok: false, msg: 'Esta cuenta ya ha sido confirmada anteriormente. Inicia sesión o restablece tu contraseña' });
+    if (user.confirmed) return res.status(404).json({ ok: false, msg: 'Su cuenta ya ha sido confirmada anteriormente, por lo que no es necesario que intente confirmarla de nuevo. Por favor, utilice la información de inicio de sesión que se le proporcionó anteriormente para acceder a su cuenta.' });
 
     user.confirmed = true;
     user.token = '';
@@ -66,7 +67,7 @@ const confirmAccount = async ({ params }: Request, res: Response) => {
   }
 }
 
-const forgotPassword = async ({ body }: Request, res: Response) => {
+export const forgotPassword = async ({ body }: Request, res: Response) => {
   const { email } = body;
 
   try {
@@ -88,7 +89,7 @@ const forgotPassword = async ({ body }: Request, res: Response) => {
   }
 }
 
-const validateToken = async ({ params }: Request, res: Response) => {
+export const validateToken = async ({ params }: Request, res: Response) => {
   const { token } = params;
 
   try {
@@ -105,7 +106,7 @@ const validateToken = async ({ params }: Request, res: Response) => {
   }
 };
 
-const resetPassword = async ({ params, body }: Request, res: Response) => {
+export const resetPassword = async ({ params, body }: Request, res: Response) => {
   const { token } = params;
   const { password } = body;
 
@@ -115,12 +116,13 @@ const resetPassword = async ({ params, body }: Request, res: Response) => {
     if (!user.confirmed) return res.status(401).json({ ok: false, msg: 'Falta confirmar su correo electronico' });
 
     user.token = '';
-    user.password = password;
-    const { _id, name, lastname, email } = await user.save();
+    user.password = hashPassword(password);
+    const updatedUser = await user.save();
 
-    return res.status(200).json({
+    return res.status(201).json({
       ok: true,
-      user: { _id, name, lastname, email },
+      user: updatedUser,
+      jwt: generateJWT( updatedUser._id, updatedUser.email),
       msg: 'Contraseña actualizada correctamente'
     });
   } catch (error) {
@@ -129,21 +131,20 @@ const resetPassword = async ({ params, body }: Request, res: Response) => {
 };
 
 //Routes Privates
-const userProfile = ({ user }: UserRequest, res: Response) => {
+export const userProfile = ({ user }: UserRequest, res: Response) => {
   if (!user) return res.status(401).json({ ok: false, msg: 'No tiene autorización' });
-  const { _id, name, lastname, email, phone, address } = user;
 
   try {
     return res.status(200).json({
       ok: true,
-      user: { _id, name, lastname, email, phone, address },
+      user,
     });
   } catch (error) {
     return res.status(500).json({ ok: false, msg: 'Error del sistema, comuniquese con el administrador' });
   }
 };
 
-const updateUserProfile = async ({ params, body, user }: UserRequest, res: Response) => {
+export const updateUserProfile = async ({ params, body, user }: UserRequest, res: Response) => {
   if (!user) return res.status(401).json({ ok: false, msg: 'No tiene autorización' });
   const { id } = params;
   const { email } = body;
@@ -153,27 +154,27 @@ const updateUserProfile = async ({ params, body, user }: UserRequest, res: Respo
     const user = await userModel.findById(id);
     if (!user) return res.status(404).json({ ok: false, msg: 'Usuario no encontrado' });
     if (!user.confirmed) return res.status(401).json({ ok: false, msg: 'Falta confirmar su correo electronico' });
+    
+    if (user._id.toString() !== _id.toString()) return res.status(401).json({ ok: false, msg: 'No autorizado para esta acción' });
 
     if (user.email !== email) {
       const emailExist = await userModel.findOne({ email });
       if (emailExist) return res.status(400).json({ ok: false, msg: 'El email ya está en uso' });
     }
 
-    if (user._id.toString() !== _id.toString()) return res.status(401).json({ ok: false, msg: 'No autorizado para esta acción' });
-
     const updatedUser = await userModel.findByIdAndUpdate(id, { ...body }, { new: true });
 
-    return res.status(200).json({
+    return res.status(201).json({
       ok: true,
       user: updatedUser,
-      msg: 'Perfil actualizado correctamente'
+      msg: 'Usuario actualizado correctamente'
     });
   } catch (error) {
     return res.status(500).json({ ok: false, msg: 'Error del sistema, comuniquese con el administrador' });
   }
 };
 
-const updateUserPassword = async ({ params, body, user }: UserRequest, res: Response) => {
+export const updateUserPassword = async ({ params, body, user }: UserRequest, res: Response) => {
   if (!user) return res.status(401).json({ ok: false, msg: 'No tiene autorización' });
   const { id } = params;
   const { oldPassword, newPassword } = body;
@@ -188,45 +189,28 @@ const updateUserPassword = async ({ params, body, user }: UserRequest, res: Resp
 
     if (user._id.toString() !== user._id.toString()) return res.status(401).json({ ok:false, msg: 'No autorizado para esta acción' });
 
-    user.password = newPassword;
+    user.password = hashPassword(newPassword);
     await user.save();
 
-    return res.status(200).json({
+    return res.status(201).json({
       ok: true,
       msg: 'Contraseña actualizada correctamente'
     })
   } catch (error) {
-    return res.status(500).json({ ok: false, msg: 'Error del sistema, comuniquese con el administrador' });
+    return res.status(500).json({ ok: false, msg: 'Error del sistema, comuniquese con el administrador.' });
   }
 };
 
+export const revalidateAuth = async ({ user }: UserRequest, res: Response) => {
+  if (!user) return res.status(401).json({ ok: false, msg: 'No hay usuario autenticado' });
 
-const revalidateAuth = async ({ user }: UserRequest, res: Response) => {
   try {
-    if (!user) return res.status(401).json({ ok: false, msg: 'No hay usuario autenticado' });
-    const { _id, name, lastname, email, phone, address } = user;
-
     return res.status(201).json({
       ok: true,
-      user: { _id, name, lastname, email, phone, address },
-      jwt: generateJWT(_id, email),
+      user,
+      jwt: generateJWT(user._id, user.email),
     });
   } catch (error) {
     return res.status(500).json({ ok: false, msg: 'Error del sistema, comuniquese con el administrador' });
   }
 }
-
-export {
-  userAuth,
-  userRegister,
-  confirmAccount,
-  forgotPassword,
-  validateToken,
-  resetPassword,
-
-  //PRIVATE
-  userProfile,
-  updateUserProfile,
-  updateUserPassword,
-  revalidateAuth,
-};
