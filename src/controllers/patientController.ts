@@ -8,16 +8,16 @@ export const getPatients = async ({ user }: UserRequest, res: Response) => {
   const { _id } = user;
 
   try {
-    const patients = await patientModel.find({ createdFor: _id }).populate("createdFor", "_id name lastname email").sort({ createdAt: -1 });
+    const patients = await patientModel.find({ createdFor: _id }).populate('createdFor', '_id name lastname email').sort({ createdAt: -1 });
 
     return res.status(200).json({
       ok: true,
-      patients
+      patients,
     });
   } catch (error) {
-    return res.status(500).json({ ok: false, msg: 'Error del sistema, comuniquese con el administrador' });
+    return res.status(500).json({ ok: false, msg: 'Error del sistema, comuníquese con el administrador' });
   }
-}
+};
 
 export const getPatient = async ({ params, user }: UserRequest, res: Response) => {
   if (!user) return res.status(401).json({ msg: 'No autorizado para esta acción' });
@@ -28,13 +28,14 @@ export const getPatient = async ({ params, user }: UserRequest, res: Response) =
     const patient = await patientModel.findById(id).populate('createdFor');
     if (!patient) return res.status(404).json({ msg: 'Paciente no encontrado' });
 
-    if (patient.createdFor._id.toString() !== _id.toString()) return res.status(401).json({ ok: false, msg: 'No autorizado para esta acción' });
+    if (patient.createdFor._id.toString() !== _id.toString())
+      return res.status(401).json({ ok: false, msg: 'No autorizado para esta acción' });
 
     return res.status(200).json({ ok: true, patient });
   } catch (error) {
-    return res.status(500).json({ ok: false, msg: 'Error del sistema, comuniquese con el administrador' });
-  };
-}
+    return res.status(500).json({ ok: false, msg: 'Error del sistema, comuníquese con el administrador' });
+  }
+};
 
 export const createPatient = async ({ body, user }: UserRequest, res: Response) => {
   if (!user) return res.status(401).json({ msg: 'No autorizado para esta acción' });
@@ -50,9 +51,9 @@ export const createPatient = async ({ body, user }: UserRequest, res: Response) 
       patient: savedPatient,
     });
   } catch (error) {
-    return res.status(500).json({ ok: false, msg: 'Error del sistema, comuniquese con el administrador' });
+    return res.status(500).json({ ok: false, msg: 'Error del sistema, comuníquese con el administrador' });
   }
-}
+};
 
 export const updatePatient = async ({ params, body, user }: UserRequest, res: Response) => {
   if (!user) return res.status(401).json({ msg: 'No autorizado para esta acción' });
@@ -62,7 +63,8 @@ export const updatePatient = async ({ params, body, user }: UserRequest, res: Re
     const patient = await patientModel.findById(id).populate('createdFor');
     if (!patient) return res.status(404).json({ ok: false, msg: 'Paciente no encontrado' });
 
-    if (patient.createdFor._id.toString() !== user._id.toString()) return res.status(401).json({ ok: false, msg: 'No autorizado para esta acción' });
+    if (patient.createdFor._id.toString() !== user._id.toString())
+      return res.status(401).json({ ok: false, msg: 'No autorizado para esta acción' });
 
     const updatedPatient = await patientModel.findByIdAndUpdate<Patient>(id, { ...body }, { new: true });
 
@@ -71,9 +73,9 @@ export const updatePatient = async ({ params, body, user }: UserRequest, res: Re
       patient: updatedPatient,
     });
   } catch (error) {
-    return res.status(500).json({ ok: false, msg: 'Error del sistema, comuniquese con el administrador' });
+    return res.status(500).json({ ok: false, msg: 'Error del sistema, comuníquese con el administrador' });
   }
-}
+};
 
 export const deletePatient = async ({ params, user }: UserRequest, res: Response) => {
   if (!user) return res.status(401).json({ msg: 'No autorizado para esta acción' });
@@ -83,15 +85,16 @@ export const deletePatient = async ({ params, user }: UserRequest, res: Response
     const patient = await patientModel.findById(id).populate('createdFor');
     if (!patient) return res.status(404).json({ ok: false, msg: 'Paciente no encontrado' });
 
-    if (patient.createdFor._id.toString() !== user._id.toString()) return res.status(401).json({ ok: false, msg: 'No autorizado para esta acción' });
+    if (patient.createdFor._id.toString() !== user._id.toString())
+      return res.status(401).json({ ok: false, msg: 'No autorizado para esta acción' });
 
     await patient.deleteOne();
 
     return res.status(200).json({
       ok: true,
-      msg: 'Paciente eliminado correctamente'
+      msg: 'Paciente eliminado correctamente',
     });
   } catch (error) {
-    return res.status(500).json({ ok: false, msg: 'Error del sistema, comuniquese con el administrador' });
+    return res.status(500).json({ ok: false, msg: 'Error del sistema, comuníquese con el administrador' });
   }
-}
+};

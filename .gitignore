@@ -25,3 +25,4 @@ dist-ssr
 
 # My Files
 .env
+/docker

@@ -1,0 +1,8 @@
+services:
+  pet-center-db:
+    image: mongo:5.0.16
+    container_name: pet-center
+    ports:
+      - 27017:27017
+    volumes:
+      - ./docker/db:/data/db

@@ -1,24 +1,33 @@
 /* path: /api/auth */
 import { Router } from 'express';
-import { confirmAccount, forgotPassword, resetPassword, revalidateAuth, updateUserPassword, updateUserProfile, userAuth, userProfile, userRegister, validateToken } from '../controllers';
-import { checkSesion } from '../middleware';
+import {
+  confirmAccount,
+  forgotPassword,
+  resetPassword,
+  revalidateAuth,
+  updateUserPassword,
+  updateUserProfile,
+  userAuth,
+  userProfile,
+  userRegister,
+  validateToken,
+} from '../controllers';
+import { checkSession } from '../middleware';
 
 const router = Router();
 
-router.post('/login', userAuth);  //PASÓ
-router.post('/register', userRegister); //PASÓ
-router.get('/confirm-account/:token', confirmAccount); //PASÓ
-router.post('/forgot-password', forgotPassword ); //PASÓ
-router.route('/reset-password/:token' )
-  .get( validateToken )  //Depende del programador - PASÓ
-  .post( resetPassword ); //PASÓ
+router.post('/login', userAuth);
+router.post('/register', userRegister);
+router.get('/confirm-account/:token', confirmAccount);
+router.post('/forgot-password', forgotPassword);
+router.route('/reset-password/:token').get(validateToken).post(resetPassword);
 
 //Area Protegida
-router.use( checkSesion );
+router.use(checkSession);
 
-router.get('/revalidateAuth', revalidateAuth);  //PASÓ
-router.get('/profile', userProfile);  //Depende del programador - PASÓ
-router.put('/profile/:id', updateUserProfile); //PASÓ
-router.put('/password-profile/:id', updateUserPassword); //PASÓ
+router.get('/revalidateAuth', revalidateAuth);
+router.get('/profile', userProfile);
+router.put('/profile/:id', updateUserProfile);
+router.put('/password-profile/:id', updateUserPassword);
 
 export default router;

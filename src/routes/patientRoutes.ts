@@ -1,16 +1,13 @@
 import { Router } from 'express';
 import { createPatient, deletePatient, getPatient, getPatients, updatePatient } from '../controllers';
-import { checkSesion } from '../middleware';
+import { checkSession } from '../middleware';
 
 const router = Router();
 
-router.use( checkSesion );
+router.use(checkSession);
 
-router.route('/').get(  getPatients ) //PASÓ
-  .post(  createPatient ); //PASÓ
+router.route('/').get(getPatients).post(createPatient);
 
-router.route('/:id').get( getPatient ) //Depende del programador - PASÓ
-  .put( updatePatient ) //PASÓ
-  .delete( deletePatient );  //PASÓ
+router.route('/:id').get(getPatient).put(updatePatient).delete(deletePatient);
 
-export default router
+export default router;

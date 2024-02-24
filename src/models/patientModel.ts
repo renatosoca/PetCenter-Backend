@@ -5,17 +5,17 @@ const patientSchema = new Schema<Patient>({
   name: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
   owner: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
   email: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
   visitDate: {
     type: Date,
@@ -25,13 +25,13 @@ const patientSchema = new Schema<Patient>({
   symptoms: {
     type: String,
     trim: true,
-    default: ''
+    default: '',
   },
   createdFor: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true
-  }
+    required: true,
+  },
 });
 
 export default model<Patient>('Patient', patientSchema);

@@ -1,14 +1,14 @@
-import { createTransport } from "nodemailer";
+import { createTransport } from 'nodemailer';
 
-export const emailUserRegister = async ( email: string, name: string, lastname: string, token: string ) => {
+export const emailUserRegister = async (email: string, name: string, lastname: string, token: string) => {
   try {
     const transporter = createTransport({
       host: process.env.EMAIL_HOST,
       port: Number(process.env.EMAIL_PORT),
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
+        pass: process.env.EMAIL_PASS,
+      },
     });
 
     const admin = {
@@ -17,8 +17,8 @@ export const emailUserRegister = async ( email: string, name: string, lastname: 
       subject: 'Registro de usuario en Pet Center',
       title: 'Registro de Cuenta',
       company: 'Pet Center',
-      submit: 'Confirmar mi cuenta'
-    }
+      submit: 'Confirmar mi cuenta',
+    };
     const sendEmail = await transporter.sendMail({
       from: `"${admin.name}" <${admin.email}>`,
       to: email,
@@ -75,29 +75,29 @@ export const emailUserRegister = async ( email: string, name: string, lastname: 
     });
     console.log(`Message sent: ${sendEmail.messageId}`);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-export const emailUserResetPass = async ( email: string, name: string, lastname: string, token: string ) => {
+export const emailUserResetPass = async (email: string, name: string, lastname: string, token: string) => {
   try {
     const transporter = createTransport({
       host: process.env.EMAIL_HOST,
       port: Number(process.env.EMAIL_PORT),
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
+        pass: process.env.EMAIL_PASS,
+      },
     });
-  
+
     const admin = {
       email: 'admin@gmail.com',
       name: 'Renato 👻',
-      subject: 'Reestablecer contraseña en Pet Center',
-      title: 'Reestablecer contraseña',
+      subject: 'Restablecer contraseña en Pet Center',
+      title: 'Restablecer contraseña',
       company: 'Pet Center',
-      submit: 'Reestablecer contraseña'
-    }
+      submit: 'Restablecer contraseña',
+    };
     const sendEmail = await transporter.sendMail({
       from: `"${admin.name}" <${admin.email}>`,
       to: email,
@@ -131,8 +131,8 @@ export const emailUserResetPass = async ( email: string, name: string, lastname:
         
                 <div style="background-image: url(https://zsfpcx.stripocdn.email/content/guids/CABINET_9aa36f49cdb5185ad35ee0f7a5c7d9380ade3ae69ada3493ecaa145d1284bee9/images/group_347_1.png); background-size: cover; background-position: center; background-repeat: no-repeat; border: .1rem solid #62A2EF; border-radius: .5rem; padding: 0 1rem;"> <!-- Body -->
                 <p>Estimado/a <span style="font-weight: bold; font-size: 1.3rem;">${name} ${lastname} ,</span></p>
-                <p>Hemos recibido su solicitud para reestablecer su contraseña en nuestro sitio web <span style="font-weight: bold; font-size: 1.1rem;">${admin.company}</span></p>
-                <p>Para continuar con el proceso de reestablecimiento de contraseña, <span style="color: #FFF;">haga click en el siguiente enlace:</span></p>
+                <p>Hemos recibido su solicitud para Restablecer su contraseña en nuestro sitio web <span style="font-weight: bold; font-size: 1.1rem;">${admin.company}</span></p>
+                <p>Para continuar con el proceso de restablecimiento de contraseña, <span style="color: #FFF;">haga click en el siguiente enlace:</span></p>
         
                 <a href="${process.env.FRONTEND_URI}/reset-password/${token}" target="_blank" style="padding: 1rem; text-align: center; display: block; color: #f1f1f1; background-color: #62A2EF;text-decoration: none; border-radius: 5rem; margin-bottom: 1rem;">${admin.submit}</a>
                 </div>  <!-- End Body -->
@@ -154,6 +154,6 @@ export const emailUserResetPass = async ( email: string, name: string, lastname:
     });
     console.log(`Message sent: ${sendEmail.messageId}`);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};

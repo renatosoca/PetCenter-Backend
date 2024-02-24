@@ -1,2 +1,2 @@
-export * from './checkSesion';
+export * from './checkSession';
 export * from './fieldValidations';
