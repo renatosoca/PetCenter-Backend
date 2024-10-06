@@ -1,16 +1,16 @@
 import { sign, verify } from 'jsonwebtoken';
-import { ObjectId } from 'mongoose';
+import { User } from '../interfaces';
 
-export const generateJWT = (_id: ObjectId | string, email: string) => {
+export const generateJWT = (user?: User) => {
   const jwtKeySecret: string = process.env.JWT_SECRET || '';
 
-  return sign({ _id, email }, jwtKeySecret, {
+  return sign({ user }, jwtKeySecret, {
     expiresIn: '2h',
   });
 };
 
-export const verifyJWT = (jwt: string): { _id: string; email: string } => {
+export const verifyJWT = (jwt: string): { user: User } => {
   const jwtKeySecret: string = process.env.JWT_SECRET || '';
 
-  return verify(jwt, jwtKeySecret) as { _id: string; email: string };
+  return verify(jwt, jwtKeySecret) as { user: User };
 };

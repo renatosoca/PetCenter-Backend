@@ -4,7 +4,7 @@
   "description": "Backend de PetCenter",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon src/app.ts",
     "start": "tsc && node dist/index.js"
   },
   "repository": {

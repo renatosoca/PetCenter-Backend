@@ -13,6 +13,6 @@ export const dbConnection = async () => {
     console.log(`PORT: ${db.connection.port} | Database: ${db.connection.name}`);
   } catch (error) {
     console.log(error);
-    throw new Error('Error connecting to database');
+    dbConnection();
   }
 };

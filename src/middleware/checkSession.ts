@@ -10,8 +10,9 @@ export const checkSession = async (req: UserRequest, res: Response, next: NextFu
     try {
       token = req.headers.authorization.split(' ')[1];
 
-      const { _id } = verifyJWT(token);
-      req.user = (await userModel.findById(_id).select('-password -token -confirmed -createdAt -updatedAt')) ?? undefined;
+      const { user } = verifyJWT(token);
+
+      req.user = (await userModel.findById(user._id).select('-password -token -confirmed -createdAt -updatedAt')) ?? undefined;
 
       return next();
     } catch (error) {

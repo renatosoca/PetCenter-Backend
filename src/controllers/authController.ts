@@ -16,8 +16,7 @@ export const userAuth = async ({ body }: Request, res: Response) => {
 
     return res.status(200).json({
       ok: true,
-      user,
-      jwt: generateJWT(user._id, user.email),
+      jwt: generateJWT(user),
     });
   } catch (error) {
     return res.status(500).json({ ok: false, msg: 'Error del sistema, comuníquese con el administrador' });
@@ -53,12 +52,10 @@ export const confirmAccount = async ({ params }: Request, res: Response) => {
     const user = await userModel.findOne({ token });
     if (!user) return res.status(404).json({ ok: false, msg: 'Token no válido o expirado' });
     if (user.confirmed)
-      return res
-        .status(404)
-        .json({
-          ok: false,
-          msg: 'Su cuenta ya ha sido confirmada anteriormente, por lo que no es necesario que intente confirmarla de nuevo. Por favor, utilice la información de inicio de sesión que se le proporcionó anteriormente para acceder a su cuenta.',
-        });
+      return res.status(404).json({
+        ok: false,
+        msg: 'Su cuenta ya ha sido confirmada anteriormente, por lo que no es necesario que intente confirmarla de nuevo. Por favor, utilice la información de inicio de sesión que se le proporcionó anteriormente para acceder a su cuenta.',
+      });
 
     user.confirmed = true;
     user.token = '';
@@ -127,8 +124,7 @@ export const resetPassword = async ({ params, body }: Request, res: Response) =>
 
     return res.status(201).json({
       ok: true,
-      user: updatedUser,
-      jwt: generateJWT(updatedUser._id, updatedUser.email),
+      jwt: generateJWT(updatedUser),
       msg: 'Contraseña actualizada correctamente',
     });
   } catch (error) {
@@ -213,8 +209,7 @@ export const revalidateAuth = async ({ user }: UserRequest, res: Response) => {
   try {
     return res.status(201).json({
       ok: true,
-      user,
-      jwt: generateJWT(user._id, user.email),
+      jwt: generateJWT(user),
     });
   } catch (error) {
     return res.status(500).json({ ok: false, msg: 'Error del sistema, comuníquese con el administrador' });

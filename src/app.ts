@@ -1,20 +1,21 @@
 import express from 'express';
 import 'dotenv/config';
-import cors, { CorsOptions } from 'cors';
+import cors /* , { CorsOptions } */ from 'cors';
 import { dbConnection } from './database/config';
 import { authRoutes, patientRoutes } from './routes';
 
 const app = express();
 dbConnection();
 
-const corsConfig: CorsOptions = {
+/* const corsConfig: CorsOptions = {
   origin: (origin, callback) => {
     if (origin && [process.env.FRONTEND_URI].indexOf(origin) !== -1) return callback(null, true);
 
     return callback(new Error('Not authorized by CORS'), false);
   },
-};
-app.use(cors(corsConfig));
+}; */
+app.use(cors());
+
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
