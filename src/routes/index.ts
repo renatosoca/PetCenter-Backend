@@ -1,2 +1,2 @@
-export { default as authRoutes } from './authRoutes';
-export { default as patientRoutes } from './patientRoutes';
+export { default as authRoutes } from "./auth.routes";
+export { default as patientRoutes } from "./patient.routes";

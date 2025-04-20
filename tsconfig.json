@@ -19,7 +19,8 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Completeness */
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"]
 }

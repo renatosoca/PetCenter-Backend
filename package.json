@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/app.ts",
-    "start": "tsc && node dist/index.js"
+    "start:dev": "ts-node src/app.ts",
+    "start": "tsc && node dist/index.js",
+    "swagger": "ts-node src/swagger/swagger.ts"
   },
   "repository": {
     "type": "git",
@@ -22,7 +24,9 @@
     "express-validator": "^6.15.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",
-    "nodemailer": "^6.9.1"
+    "nodemailer": "^6.9.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -33,6 +37,8 @@
     "@types/mongoose": "^5.11.97",
     "@types/multer": "^1.4.7",
     "@types/nodemailer": "^6.4.7",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "nodemon": "^2.0.21",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
