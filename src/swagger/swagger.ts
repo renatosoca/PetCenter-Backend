@@ -4,7 +4,7 @@ export const swaggerOptions = {
     info: {
       version: "1.0.0",
       title: "API Pet center",
-      description: "Api para administrar pacientes de veterinarios",
+      description: "Api para administrar pacientes de veterinarias",
     },
     components: {
       securitySchemes: {
